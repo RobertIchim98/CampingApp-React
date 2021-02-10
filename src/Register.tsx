@@ -62,10 +62,11 @@ const registerPage = () => {
             <IonLabel>
               <IonIcon icon={personOutline}></IonIcon>
             </IonLabel>
-            <Controller
-              as={<IonInput placeholder="Username" type="text"></IonInput>}
+            <IonInput
+              placeholder="Username"
               name="username"
-            ></Controller>
+              type="text"
+            ></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>

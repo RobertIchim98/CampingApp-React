@@ -18,14 +18,34 @@ import {
   bonfireOutline,
   personOutline,
   lockClosedOutline,
+  watch,
 } from "ionicons/icons";
+import { useForm } from "react-hook-form";
+import { type } from "os";
 
 const LoginPage = ({ login }) => {
+  /*
+  const { register, handleSubmit, watch, errors } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  }; // your form submit function which will invoke after successful validation
+
+  console.log(watch("example")); // you can watch individual input by pass the name of the input
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>Example</label>
+      <IonInput name="example" ref={register({ required: true })} />
+      <label>ExampleRequired</label>
+      <IonInput name="exampleRequired" ref={register({ required: true })} />
+      <input type="submit" />
+    </form>
+  );
+  */
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const { email, password } = formData;
 
   const onChange = (e) =>
@@ -33,33 +53,73 @@ const LoginPage = ({ login }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
     login(email, password);
   };
-
   // is user authenticated
   //redirect to home page
 
   return (
     <IonPage>
       <IonContent>
-        <h1>Login</h1>
-        <form onSubmit={(e) => onSubmit(e)}>
-          <IonInput
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => onChange(e)}
-            required
-          />
-          <IonInput
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => onChange(e)}
-            required
-          />
-          <IonButton type="submit">Submit</IonButton>
+        <h1 className="ion-padding">Login</h1>
+        <IonButton
+          color="secondary"
+          fill="outline"
+          shape="round"
+          href="/register"
+        >
+          <IonIcon slot="start" icon={bonfireOutline} />
+          Register
+        </IonButton>
+        <form className="ion-padding" onSubmit={(e) => onSubmit(e)}>
+          <IonItem>
+            <IonLabel>
+              <IonIcon icon={personOutline}></IonIcon>
+            </IonLabel>
+            <IonInput
+              type="email"
+              placeholder="Email"
+              name="email"
+              onIonChange={(e) => onChange(e)}
+              required
+            />
+          </IonItem>
+          <IonItem>
+            <IonLabel>
+              <IonIcon icon={lockClosedOutline}></IonIcon>
+            </IonLabel>
+            <IonInput
+              type="password"
+              placeholder="Password"
+              name="password"
+              onIonChange={(e) => onChange(e)}
+              required
+            />
+          </IonItem>
+          <IonButton
+            type="submit"
+            expand="block"
+            color="success"
+            size="large"
+            shape="round"
+          >
+            <IonIcon slot="start" icon={logInOutline} />
+            Login
+          </IonButton>
         </form>
+        <IonItem class="ion-text-center" lines="none">
+          <IonLabel>Don't have an account?</IonLabel>
+          <IonButton
+            color="secondary"
+            fill="outline"
+            shape="round"
+            href="/register"
+          >
+            <IonIcon slot="start" icon={bonfireOutline} />
+            Join the Community!
+          </IonButton>
+        </IonItem>
       </IonContent>
     </IonPage>
   );
@@ -67,7 +127,6 @@ const LoginPage = ({ login }) => {
   //const mapStateToProps = (state) => ({
   // is authenticated?
   // });
-
   /*
   return (
     <IonPage>

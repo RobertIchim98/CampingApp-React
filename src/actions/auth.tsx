@@ -17,7 +17,7 @@ export const load_user = () => async (dispatch) => {
     };
     try {
       const res = await axios.get(
-        `${process.env.REAC_APP_API_URL}/auth/users/me`,
+        `${process.env.REACT_APP_API_URL}/auth/users/me`,
         config
       );
 
@@ -46,6 +46,7 @@ export const login = (email, password) => async (dispatch) => {
 
   const body = JSON.stringify({ email, password });
 
+  console.log("This is user:" + body);
   try {
     const res = await axios.post(
       `${process.env.REACT_APP_API_URL}/auth/token/login`,
@@ -63,5 +64,6 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({
       type: LOGIN_FAIL,
     });
+    console.log(LOGIN_FAIL);
   }
 };
