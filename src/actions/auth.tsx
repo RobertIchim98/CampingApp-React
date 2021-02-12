@@ -12,8 +12,10 @@ import {
 export const checkAuthenticated = () => async (dispatch) => {
   if (localStorage.getItem("access")) {
     const config = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     };
 
     const body = JSON.stringify({ token: localStorage.getItem("access") });
