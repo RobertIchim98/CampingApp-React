@@ -1,13 +1,20 @@
 import { IonContent, IonPage } from "@ionic/react";
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { checkAuthenticated, load_user } from "./actions/auth";
 
-const MapView = () => {
+const MapView = (props) => {
+  useEffect(() => {
+    props.checkAuthenticated();
+    props.load_user();
+  }, []);
+
   return (
     <IonPage>
       <IonContent>
-        <div> Map here! </div>
+        <div> Hello {load_user.name} </div>
       </IonContent>
     </IonPage>
   );
 };
-export default MapView;
+export default connect(null, { checkAuthenticated, load_user })(MapView);

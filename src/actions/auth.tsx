@@ -33,9 +33,12 @@ export const checkAuthenticated = () => async (dispatch) => {
         });
       }
     } catch (err) {
-      dispatch({
-        type: AUTHENTICATED_FAIL,
-      });
+      dispatch(
+        {
+          type: AUTHENTICATED_FAIL,
+        },
+        console.log("token_not_valid")
+      );
     }
   } else {
     dispatch({
@@ -88,7 +91,7 @@ export const login = (email, password) => async (dispatch) => {
   console.log("This is user:" + body);
   try {
     const res = await axios.post(
-      `${process.env.REACT_APP_API_URL}/auth/token/login`,
+      `${process.env.REACT_APP_API_URL}/auth/jwt/create/`,
       body,
       config
     );

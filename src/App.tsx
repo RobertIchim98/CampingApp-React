@@ -5,7 +5,6 @@ import {
   IonIcon,
   IonLabel,
   IonRouterOutlet,
-  IonTab,
   IonTabBar,
   IonTabButton,
   IonTabs,
@@ -17,7 +16,6 @@ import Login from "./Login";
 import Register from "./Register";
 import Greet from "./Greet";
 import mapview from "./mapview";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 /* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";

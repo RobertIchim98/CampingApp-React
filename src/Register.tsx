@@ -1,16 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types"; // new import
+import React, { useState } from "react";
+import { Toast } from "./toast";
 import {
   IonButton,
-  IonCol,
   IonContent,
-  IonGrid,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonPage,
-  IonRow,
+  IonToast,
 } from "@ionic/react";
 import {
   logInOutline,
@@ -19,45 +17,61 @@ import {
   lockClosedOutline,
   atOutline,
 } from "ionicons/icons";
-import { Controller, useForm } from "react-hook-form";
 
-class Signup extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      username: "",
-      firstname: "",
-      secondname: "",
-      email: "",
-      password: "",
-    };
-  }
-  onChange = (e: any) => {
-    this.setState({ [e.target.name]: e.target.value });
+const RegisterPage = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    re_password: "",
+  });
+  const {
+    username,
+    email,
+    firstName,
+    lastName,
+    password,
+    re_password,
+  } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // update function to call the action
-  onSignupClick = () => {
-    const userData = {
-      username: this.state.username,
-      firstname: this.state.firstname,
-      secondname: this.state.secondname,
-      email: this.state.email,
-      password: this.state.password,
-    };
-    this.props.signupNewUser(userData); // <-- signup new user request
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(formData);
+    if (formData.password == formData.re_password) {
+      console.log("Passwords okay!");
+    } else {
+      console.log("passdontmatch");
+      Toast("Passwords don't match!", "danger");
+    }
+    //register(all the form data here);
   };
-}
-
-const registerPage = () => {
   return (
     <IonPage>
       <IonContent>
-        <h2>Register</h2>
-        <p>
-          Welcome Adventurer! <br></br>Create you account and start your Journey
+        <h2 className="ion-padding">Register</h2>
+        <p className="ion-padding">
+          Welcome Adventurer! <br></br>Create you account and start your
+          Journey:
         </p>
-        <form>
+        <form className="ion-padding" onSubmit={(e) => onSubmit(e)}>
+          <IonItem>
+            <IonLabel>
+              <IonIcon icon={atOutline}></IonIcon>
+            </IonLabel>
+            <IonInput
+              placeholder="Email"
+              type="email"
+              name="email"
+              onIonChange={(e) => onChange(e)}
+              required
+            ></IonInput>
+          </IonItem>
           <IonItem>
             <IonLabel>
               <IonIcon icon={personOutline}></IonIcon>
@@ -66,39 +80,64 @@ const registerPage = () => {
               placeholder="Username"
               name="username"
               type="text"
+              onIonChange={(e) => onChange(e)}
+              required
             ></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>
               <IonIcon icon={personOutline}></IonIcon>
             </IonLabel>
-            <IonInput placeholder="First Name" type="text"></IonInput>
+            <IonInput
+              placeholder="First Name"
+              type="text"
+              name="firstName"
+              onIonChange={(e) => onChange(e)}
+              required
+            ></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>
               <IonIcon icon={personOutline}></IonIcon>
             </IonLabel>
-            <IonInput placeholder="Second Name" type="text"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel>
-              <IonIcon icon={atOutline}></IonIcon>
-            </IonLabel>
-            <IonInput placeholder="Email" type="email"></IonInput>
+            <IonInput
+              placeholder="Last Name"
+              type="text"
+              name="lastName"
+              onIonChange={(e) => onChange(e)}
+              required
+            ></IonInput>
           </IonItem>
           <IonItem>
             <IonLabel>
               <IonIcon icon={lockClosedOutline}></IonIcon>
             </IonLabel>
-            <IonInput placeholder="Password" type="password"></IonInput>
+            <IonInput
+              placeholder="Password"
+              type="password"
+              name="password"
+              onIonChange={(e) => onChange(e)}
+              required
+            ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonLabel>
+              <IonIcon icon={lockClosedOutline}></IonIcon>
+            </IonLabel>
+            <IonInput
+              placeholder="Re-type Password"
+              type="password"
+              name="re_password"
+              onIonChange={(e) => onChange(e)}
+              required
+            ></IonInput>
           </IonItem>
           <IonButton
             expand="block"
             color="secondary"
             size="large"
             shape="round"
-            href="/register"
-            routerDirection="forward"
+            type="submit"
           >
             <IonIcon slot="start" icon={bonfireOutline} />
             Join the Community!
@@ -121,16 +160,4 @@ const registerPage = () => {
     </IonPage>
   );
 };
-export default registerPage;
-
-/*
-          <IonCol>
-            <IonItem>
-              <IonLabel>
-                <IonIcon icon={calendarOutline}></IonIcon>
-              </IonLabel>
-              <IonLabel> Birthday</IonLabel>
-              <IonInput placeholder="Date of Birth" type="date"></IonInput>
-            </IonItem>
-          </IonCol>
-*/
+export default RegisterPage;

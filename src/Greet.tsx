@@ -1,26 +1,15 @@
 import React from "react";
 import {
-  IonApp,
   IonButton,
-  IonCol,
   IonContent,
-  IonGrid,
-  IonHeader,
   IonIcon,
-  IonImg,
-  IonInput,
   IonItem,
   IonLabel,
-  IonNav,
-  IonRouterOutlet,
-  IonRow,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { logInOutline, bonfireOutline } from "ionicons/icons";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { createNull } from "typescript";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const greetPage = () => {
   return (

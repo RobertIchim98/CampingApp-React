@@ -3,27 +3,22 @@ import { connect } from "react-redux";
 import { login } from "./actions/auth";
 import {
   IonButton,
-  IonCol,
   IonContent,
-  IonGrid,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonPage,
-  IonRow,
 } from "@ionic/react";
 import {
   logInOutline,
   bonfireOutline,
   personOutline,
   lockClosedOutline,
-  watch,
 } from "ionicons/icons";
-import { useForm } from "react-hook-form";
-import { type } from "os";
+import { Redirect } from "react-router";
 
-const LoginPage = ({ login }) => {
+const LoginPage = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,6 +35,9 @@ const LoginPage = ({ login }) => {
   };
   // is user authenticated
   //redirect to home page
+  if (isAuthenticated) {
+    return <Redirect to="/mapview" />;
+  }
 
   return (
     <IonPage>
@@ -105,65 +103,10 @@ const LoginPage = ({ login }) => {
       </IonContent>
     </IonPage>
   );
-
-  //const mapStateToProps = (state) => ({
-  // is authenticated?
-  // });
-  /*
-  return (
-    <IonPage>
-      <IonContent>
-        <h2>Login</h2>
-        <IonButton
-          color="secondary"
-          fill="outline"
-          shape="round"
-          href="/register"
-        >
-          <IonIcon slot="start" icon={bonfireOutline} />
-          Register
-        </IonButton>
-        <p>Welcome to Adventurer's Atlas!</p>
-        <p>Come see where people camp and spend their time outdoors!</p>
-
-        <IonItem>
-          <IonLabel>
-            <IonIcon icon={personOutline}></IonIcon>
-          </IonLabel>
-          <IonInput placeholder="Email" type="email"></IonInput>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <IonIcon icon={lockClosedOutline}></IonIcon>
-          </IonLabel>
-          <IonInput placeholder="Password" type="password"></IonInput>
-        </IonItem>
-        <IonButton
-          expand="block"
-          color="success"
-          size="large"
-          shape="round"
-          href="/login"
-          routerDirection="forward"
-        >
-          <IonIcon slot="start" icon={logInOutline} />
-          Login
-        </IonButton>
-        <IonItem class="ion-text-center" lines="none">
-          <IonLabel>Don't have an account?</IonLabel>
-          <IonButton
-            color="secondary"
-            fill="outline"
-            shape="round"
-            href="/register"
-          >
-            <IonIcon slot="start" icon={bonfireOutline} />
-            Join the Community!
-          </IonButton>
-        </IonItem>
-      </IonContent>
-    </IonPage>
-  );
-  */
 };
-export default connect(null, { login })(LoginPage);
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(LoginPage);
