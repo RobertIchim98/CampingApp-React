@@ -24,24 +24,6 @@ import { useForm } from "react-hook-form";
 import { type } from "os";
 
 const LoginPage = ({ login }) => {
-  /*
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  }; // your form submit function which will invoke after successful validation
-
-  console.log(watch("example")); // you can watch individual input by pass the name of the input
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Example</label>
-      <IonInput name="example" ref={register({ required: true })} />
-      <label>ExampleRequired</label>
-      <IonInput name="exampleRequired" ref={register({ required: true })} />
-      <input type="submit" />
-    </form>
-  );
-  */
   const [formData, setFormData] = useState({
     email: "",
     password: "",
