@@ -17,21 +17,25 @@ import {
   lockClosedOutline,
   atOutline,
 } from "ionicons/icons";
+import { signup } from "./actions/auth";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-const RegisterPage = () => {
+const RegisterPage = ({ signup, isAuthenticated }) => {
+  const [accountCreated, setAccountCreated] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     password: "",
     re_password: "",
   });
   const {
     username,
     email,
-    firstName,
-    lastName,
+    first_name,
+    last_name,
     password,
     re_password,
   } = formData;
@@ -39,18 +43,25 @@ const RegisterPage = () => {
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log(formData);
-    if (formData.password == formData.re_password) {
-      console.log("Passwords okay!");
-    } else {
-      console.log("passdontmatch");
-      Toast("Passwords don't match!", "danger");
+    if (password === re_password) {
+      signup(username, first_name, last_name, email, password, re_password);
+      setAccountCreated(true);
     }
-    //register(all the form data here);
   };
+  /*
+  if (isAuthenticated) {
+    return <Redirect to="/" />;
+  }
+  
+  
+  if (accountCreated) {
+    return <Redirect to="/login" />;
+  }
+  */
+
   return (
     <IonPage>
       <IonContent>
@@ -91,7 +102,7 @@ const RegisterPage = () => {
             <IonInput
               placeholder="First Name"
               type="text"
-              name="firstName"
+              name="first_name"
               onIonChange={(e) => onChange(e)}
               required
             ></IonInput>
@@ -103,7 +114,7 @@ const RegisterPage = () => {
             <IonInput
               placeholder="Last Name"
               type="text"
-              name="lastName"
+              name="last_name"
               onIonChange={(e) => onChange(e)}
               required
             ></IonInput>
@@ -133,11 +144,11 @@ const RegisterPage = () => {
             ></IonInput>
           </IonItem>
           <IonButton
+            type="submit"
             expand="block"
             color="secondary"
             size="large"
             shape="round"
-            type="submit"
           >
             <IonIcon slot="start" icon={bonfireOutline} />
             Join the Community!
@@ -149,7 +160,6 @@ const RegisterPage = () => {
               fill="outline"
               shape="round"
               href="/login"
-              routerDirection="forward"
             >
               <IonIcon slot="start" icon={logInOutline} />
               Login
@@ -160,4 +170,8 @@ const RegisterPage = () => {
     </IonPage>
   );
 };
-export default RegisterPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { signup })(RegisterPage);

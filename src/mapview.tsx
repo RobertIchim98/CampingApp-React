@@ -1,4 +1,4 @@
-import { IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage } from "@ionic/react";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { checkAuthenticated, load_user } from "./actions/auth";
@@ -12,7 +12,7 @@ const MapView = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <div> Hello {load_user.name} </div>
+        <div> Hello User!</div>
       </IonContent>
     </IonPage>
   );

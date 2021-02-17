@@ -53,7 +53,7 @@ const App: React.FC = () => {
             <IonTabBar slot="bottom">
               <IonTabButton href="/mapview" tab="mapview">
                 <IonIcon icon={mapOutline}></IonIcon>
-                <IonLabel>Map</IonLabel>
+                <IonLabel>Discover</IonLabel>
               </IonTabButton>
               <IonTabButton href="/spots" tab="spots">
                 <IonIcon icon={navigateOutline}></IonIcon>

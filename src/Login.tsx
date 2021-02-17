@@ -30,13 +30,16 @@ const LoginPage = ({ login, isAuthenticated }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
     login(email, password);
   };
+
   // is user authenticated
   //redirect to home page
   if (isAuthenticated) {
+    console.log("You are authenticated");
     return <Redirect to="/mapview" />;
+  } else {
+    console.log("Not authenticated");
   }
 
   return (
