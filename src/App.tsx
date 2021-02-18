@@ -1,5 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
+
 import {
   IonApp,
   IonIcon,
@@ -36,39 +37,42 @@ import "./theme/variables.css";
 import { Provider } from "react-redux";
 import store from "./store";
 import { IonReactRouter } from "@ionic/react-router";
+import Layouts from "./hocs/Layouts";
+import SettingsPage from "./SettingsPage";
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
       <IonApp>
         <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route path="/greet" exact component={Greet} />
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <Route path="/mapview" component={mapview} />
-            </IonRouterOutlet>
-
-            <IonTabBar slot="bottom">
-              <IonTabButton href="/mapview" tab="mapview">
-                <IonIcon icon={mapOutline}></IonIcon>
-                <IonLabel>Discover</IonLabel>
-              </IonTabButton>
-              <IonTabButton href="/spots" tab="spots">
-                <IonIcon icon={navigateOutline}></IonIcon>
-                <IonLabel>My Spots</IonLabel>
-              </IonTabButton>
-              <IonTabButton href="/settings" tab="settings">
-                <IonIcon icon={settingsOutline}></IonIcon>
-                <IonLabel>Settings</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
+          <Layouts>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route path="/greet" component={Greet} />
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+                <Route path="/mapview" component={mapview} />
+                <Route path="/settings" component={SettingsPage} />
+              </IonRouterOutlet>
+              <IonTabBar slot="bottom">
+                <IonTabButton href="/mapview" tab="mapview">
+                  <IonIcon icon={mapOutline}></IonIcon>
+                  <IonLabel>Discover</IonLabel>
+                </IonTabButton>
+                <IonTabButton href="/spots" tab="spots">
+                  <IonIcon icon={navigateOutline}></IonIcon>
+                  <IonLabel>My Spots</IonLabel>
+                </IonTabButton>
+                <IonTabButton href="/settings" tab="settings">
+                  <IonIcon icon={settingsOutline}></IonIcon>
+                  <IonLabel>Settings</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </Layouts>
         </IonReactRouter>
       </IonApp>
     </Provider>
   );
 };
-
 export default App;

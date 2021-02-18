@@ -9,9 +9,15 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { logInOutline, bonfireOutline } from "ionicons/icons";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-const greetPage = () => {
+const greetPage = ({ isAuthenticated }) => {
+  console.log(isAuthenticated);
+  if (isAuthenticated) {
+    return <Redirect to="/mapview" />;
+  }
+
   return (
     <Router>
       <IonToolbar class="ion-text-center">
@@ -52,4 +58,8 @@ const greetPage = () => {
     </Router>
   );
 };
-export default greetPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(greetPage);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { login } from "./actions/auth";
+import { Redirect } from "react-router";
 import {
   IonButton,
   IonContent,
@@ -16,7 +17,6 @@ import {
   personOutline,
   lockClosedOutline,
 } from "ionicons/icons";
-import { Redirect } from "react-router";
 
 const LoginPage = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -33,13 +33,8 @@ const LoginPage = ({ login, isAuthenticated }) => {
     login(email, password);
   };
 
-  // is user authenticated
-  //redirect to home page
   if (isAuthenticated) {
-    console.log("You are authenticated");
     return <Redirect to="/mapview" />;
-  } else {
-    console.log("Not authenticated");
   }
 
   return (

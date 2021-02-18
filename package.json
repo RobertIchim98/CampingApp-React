@@ -20,9 +20,11 @@
     "ionicons": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "leaflet": "^1.7.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-hook-form": "^6.15.1",
+    "react-leaflet": "^3.1.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.2.0",
@@ -53,7 +55,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.6"
+    "@capacitor/cli": "2.4.6",
+    "@types/leaflet": "^1.5.23"
   },
   "description": "An Ionic project"
 }

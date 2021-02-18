@@ -51,16 +51,14 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
       setAccountCreated(true);
     }
   };
-  /*
+
+  console.log("isAuthenticated:" + isAuthenticated);
   if (isAuthenticated) {
-    return <Redirect to="/" />;
+    return <Redirect to="/mapview" />;
   }
-  
-  
   if (accountCreated) {
     return <Redirect to="/login" />;
   }
-  */
 
   return (
     <IonPage>
