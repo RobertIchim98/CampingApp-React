@@ -3,6 +3,7 @@ import {
   IonButton,
   IonContent,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonTitle,
@@ -11,6 +12,7 @@ import {
 import { logInOutline, bonfireOutline } from "ionicons/icons";
 import { BrowserRouter as Router, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import tent from "./assets/img/tent.png";
 
 const greetPage = ({ isAuthenticated }) => {
   console.log(isAuthenticated);
@@ -24,6 +26,7 @@ const greetPage = ({ isAuthenticated }) => {
         <IonTitle>Adventurer's Atlas</IonTitle>
       </IonToolbar>
       <IonContent class="vertical-center">
+        <IonImg src={tent} />
         <IonItem class="ion-text-center">
           <IonLabel>
             <IonButton

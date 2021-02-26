@@ -61,6 +61,16 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-tint: #f5f6f9;
 }
 
+.button_primary_white_text {
+    --background: var(--ion-color-primary) !important;
+    --color: white !important;
+}
+
+.button_secondary_white_text {
+    --background: var(--ion-color-secondary) !important;
+    --color: white !important;
+}
+
 @media (prefers-color-scheme: dark) {
     /*
    * Dark Colors

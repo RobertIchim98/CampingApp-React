@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Toast } from "./toast";
+import logimg from "./assets/img/Register2.png";
 import {
   IonButton,
   IonContent,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -63,15 +65,11 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
   return (
     <IonPage>
       <IonContent>
-        <h2 className="ion-padding">Register</h2>
-        <p className="ion-padding">
-          Welcome Adventurer! <br></br>Create you account and start your
-          Journey:
-        </p>
+        <IonImg src={logimg} />
         <form className="ion-padding" onSubmit={(e) => onSubmit(e)}>
           <IonItem>
             <IonLabel>
-              <IonIcon icon={atOutline}></IonIcon>
+              <IonIcon icon={atOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="Email"
@@ -81,9 +79,10 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               required
             ></IonInput>
           </IonItem>
+          <br />
           <IonItem>
             <IonLabel>
-              <IonIcon icon={personOutline}></IonIcon>
+              <IonIcon icon={personOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="Username"
@@ -93,9 +92,10 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               required
             ></IonInput>
           </IonItem>
+          <br />
           <IonItem>
             <IonLabel>
-              <IonIcon icon={personOutline}></IonIcon>
+              <IonIcon icon={personOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="First Name"
@@ -105,9 +105,10 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               required
             ></IonInput>
           </IonItem>
+          <br />
           <IonItem>
             <IonLabel>
-              <IonIcon icon={personOutline}></IonIcon>
+              <IonIcon icon={personOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="Last Name"
@@ -117,9 +118,10 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               required
             ></IonInput>
           </IonItem>
+          <br />
           <IonItem>
             <IonLabel>
-              <IonIcon icon={lockClosedOutline}></IonIcon>
+              <IonIcon icon={lockClosedOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="Password"
@@ -131,7 +133,7 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
           </IonItem>
           <IonItem>
             <IonLabel>
-              <IonIcon icon={lockClosedOutline}></IonIcon>
+              <IonIcon icon={lockClosedOutline} color="secondary"></IonIcon>
             </IonLabel>
             <IonInput
               placeholder="Re-type Password"
@@ -141,15 +143,16 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               required
             ></IonInput>
           </IonItem>
+          <br></br>
           <IonButton
             type="submit"
             expand="block"
-            color="secondary"
             size="large"
             shape="round"
+            class="button_secondary_white_text"
           >
             <IonIcon slot="start" icon={bonfireOutline} />
-            Join the Community!
+            Register
           </IonButton>
           <IonItem class="ion-text-center" lines="none">
             <IonLabel>Already have an account?</IonLabel>

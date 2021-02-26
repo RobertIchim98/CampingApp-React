@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { login } from "./actions/auth";
 import { Redirect } from "react-router";
+import logimg from "./assets/img/Login4.png";
 import {
   IonButton,
   IonContent,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -40,20 +42,12 @@ const LoginPage = ({ login, isAuthenticated }) => {
   return (
     <IonPage>
       <IonContent>
-        <h1 className="ion-padding">Login</h1>
-        <IonButton
-          color="secondary"
-          fill="outline"
-          shape="round"
-          href="/register"
-        >
-          <IonIcon slot="start" icon={bonfireOutline} />
-          Register
-        </IonButton>
+        <IonImg src={logimg} />
         <form className="ion-padding" onSubmit={(e) => onSubmit(e)}>
+          <br></br>
           <IonItem>
             <IonLabel>
-              <IonIcon icon={personOutline}></IonIcon>
+              <IonIcon icon={personOutline} color="primary"></IonIcon>
             </IonLabel>
             <IonInput
               type="email"
@@ -63,9 +57,10 @@ const LoginPage = ({ login, isAuthenticated }) => {
               required
             />
           </IonItem>
+          <br></br>
           <IonItem>
             <IonLabel>
-              <IonIcon icon={lockClosedOutline}></IonIcon>
+              <IonIcon icon={lockClosedOutline} color="primary"></IonIcon>
             </IonLabel>
             <IonInput
               type="password"
@@ -75,12 +70,13 @@ const LoginPage = ({ login, isAuthenticated }) => {
               required
             />
           </IonItem>
+          <br></br>
           <IonButton
             type="submit"
             expand="block"
-            color="success"
             size="large"
             shape="round"
+            class="button_primary_white_text"
           >
             <IonIcon slot="start" icon={logInOutline} />
             Login
