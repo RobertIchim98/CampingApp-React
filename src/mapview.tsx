@@ -11,8 +11,17 @@ import { Redirect } from "react-router";
 import { checkAuthenticated, load_user } from "./actions/auth";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
+import { isThisTypeNode } from "typescript";
 
-const MapView = ({ isAuthenticated }) => {
+const MapView = ({ isAuthenticated, load_user }) => {
+  const [name, setName] = React.useState([]);
+
+  React.useEffect(() => {
+    load_user().then((data) => setName(data));
+  }, []);
+
+  //var user_data = load_user();
+  //load_user().then((value) =>
   if (!isAuthenticated) {
     return <Redirect to="/greet" />;
   }
@@ -38,6 +47,7 @@ const MapView = ({ isAuthenticated }) => {
             </Marker>
           </MapContainer>
         </IonCard>
+        <h1>Hello {name["first_name"]}!</h1>
       </IonContent>
     </IonPage>
   );

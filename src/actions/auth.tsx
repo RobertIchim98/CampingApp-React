@@ -30,6 +30,7 @@ export const load_user = () => async (dispatch) => {
         type: USER_LOADED_SUCCESS,
         payload: res.data,
       });
+      return res.data;
     } catch (err) {
       dispatch({
         type: USER_LOADED_FAIL,
