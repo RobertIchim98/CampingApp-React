@@ -42,7 +42,6 @@ export const load_user = () => async (dispatch) => {
     });
   }
 };
-
 export const checkAuthenticated = () => async (dispatch) => {
   if (localStorage.getItem("access")) {
     const config = {
