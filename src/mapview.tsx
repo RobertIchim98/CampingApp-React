@@ -1,13 +1,14 @@
 import {
   IonCard,
+  IonCardContent,
+  IonCardTitle,
   IonContent,
   IonHeader,
   IonImg,
-  IonItemSliding,
   IonPage,
-  IonProgressBar,
   IonSearchbar,
-  IonTitle,
+  IonSlides,
+  IonSlide,
 } from "@ionic/react";
 import React from "react";
 import { connect } from "react-redux";
@@ -17,7 +18,9 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
 import axios from "axios";
 import { Toast } from "./toast";
+import campimg from "./assets/img/campimg.jpeg";
 import backpack from "./assets/img/backpack.png";
+import L from "leaflet";
 
 const getSpots = () => {
   const config = {
@@ -33,6 +36,7 @@ const getSpots = () => {
     return response.data;
   });
 };
+
 const geolocationOptions = {
   enableHighAccuracy: true,
   timeout: 1000 * 60 * 1, // 1 min (1000 ms * 60 sec * 1 minute = 60 000ms)
@@ -90,7 +94,6 @@ const MapView = ({ isAuthenticated, load_user }) => {
           <IonSearchbar color="primary" animated={true}></IonSearchbar>
 
           <MapContainer
-            style={{ height: "100vw" }}
             center={[location.latitude, location.longitude]}
             zoom={6}
             scrollWheelZoom={false}
@@ -100,9 +103,7 @@ const MapView = ({ isAuthenticated, load_user }) => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={[location.latitude, location.longitude]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
+              <Popup>You are here</Popup>
             </Marker>
             {spots.map((spot) => {
               return (
@@ -114,6 +115,19 @@ const MapView = ({ isAuthenticated, load_user }) => {
           </MapContainer>
 
           <h1>Hello {name["first_name"]}!</h1>
+          <IonSlides pager={true}>
+            {spots.map((spot) => {
+              return (
+                <IonSlide>
+                  <IonCard class="ion-text-center">
+                    <IonImg src={campimg} style={{ height: "50vw" }} />
+                    <IonCardTitle>{spot.title}</IonCardTitle>
+                    <IonCardContent>{spot.description}</IonCardContent>
+                  </IonCard>
+                </IonSlide>
+              );
+            })}
+          </IonSlides>
         </IonContent>
       ) : (
         <IonContent>
