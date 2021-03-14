@@ -17,6 +17,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Greet from "./Greet";
 import mapview from "./mapview";
+import myspots from "./myspots";
 
 /* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
@@ -48,11 +49,12 @@ const App: React.FC = () => {
           <Layouts>
             <IonTabs>
               <IonRouterOutlet>
-                <Route path="/greet" component={Greet} />
+                <Route path="" component={Greet} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/mapview" component={mapview} />
                 <Route path="/settings" component={SettingsPage} />
+                <Route path="/spots" component={myspots} />
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
                 <IonTabButton href="/mapview" tab="mapview">
