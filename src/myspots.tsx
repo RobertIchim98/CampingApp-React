@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
 import campimg from "./assets/img/campimg.jpeg";
 import backpack from "./assets/img/backpack.png";
-import { useCurrentLocation } from "./actions/spots";
+import { useCurrentLocation, addSpot } from "./actions/spots";
 import { informationCircleOutline, mapOutline } from "ionicons/icons";
 import {
   IonButton,
@@ -34,16 +34,19 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   const [formData, setFormData] = React.useState({
     title: "",
     description: "",
-    spotlocation: location,
+    spotlocation: {},
   });
   const { title, description, spotlocation } = formData;
+  navigator.geolocation.getCurrentPosition((spotlocation) => {
+    setFormData({ ...formData, spotlocation: spotlocation });
+  });
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    //login(email, password);
+    addSpot(title, description, name["username"], spotlocation);
     console.log(formData);
   };
 

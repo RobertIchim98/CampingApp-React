@@ -4,16 +4,13 @@ import {
   IonCardContent,
   IonCardTitle,
   IonContent,
-  IonHeader,
   IonImg,
   IonPage,
   IonSearchbar,
   IonSlides,
   IonSlide,
   IonToolbar,
-  useIonViewDidEnter,
   IonSkeletonText,
-  IonApp,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
@@ -28,25 +25,6 @@ const MapView = ({ isAuthenticated, load_user }) => {
   const [spots, setSpots] = React.useState([]);
 
   const { location, weather } = useCurrentLocation();
-
-  /*
-  if (!location) {
-    console.log("loading");
-  } else {
-    getWeather(location.latitude, location.longitude).then((data) =>
-      setWeather(data)
-    );
-    console.log(weather);
-  }
-  */
-  /*
-  location
-    ? getWeather(location.latitude, location.longitude).then((data) =>
-        setWeather(data)
-      )
-    : console.log("loading");
-    */
-  //useCurrentLocation(geolocationOptions).then((data) => setLocation(data));
 
   React.useEffect(() => {
     load_user().then((data) => setName(data));
@@ -78,7 +56,7 @@ const MapView = ({ isAuthenticated, load_user }) => {
             {spots.map((spot) => {
               return (
                 <Marker position={spot.lat_lon} key={spot.id}>
-                  <Popup>Title:{spot.title}</Popup>
+                  <Popup>{spot.title}</Popup>
                 </Marker>
               );
             })}
@@ -97,12 +75,12 @@ const MapView = ({ isAuthenticated, load_user }) => {
           {spots.map((spot) => {
             return (
               <IonSlide>
-                <IonCard class="ion-text-center">
+                <IonCard class="ion-text-center" style={{ height: "100vw" }}>
                   <IonImg src={campimg} style={{ height: "50vw" }} />
                   <IonCardTitle>{spot.title}</IonCardTitle>
                   <IonCardContent>
                     <p>{spot.description}</p>
-                    <p>Posted by: {spot.owner}</p>
+                    <p>by {spot.owner}</p>
                   </IonCardContent>
                 </IonCard>
               </IonSlide>

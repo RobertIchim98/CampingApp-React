@@ -12,6 +12,35 @@ export const getSpots = async () => {
 };
 
 //create addSpot
+export const addSpot = async (title, description, owner, spotlocation) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  };
+  const body = JSON.stringify({
+    owner,
+    title,
+    description,
+    location:
+      "SRID=4326;POINT ( " +
+      spotlocation.coords.longitude +
+      " " +
+      spotlocation.coords.latitude +
+      ")",
+  });
+  try {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/spot/`,
+      body,
+      config
+    );
+    console.log(res);
+  } catch (err) {
+    console.log("Location error" + err);
+  }
+};
 
 /*
 Leaflet part
