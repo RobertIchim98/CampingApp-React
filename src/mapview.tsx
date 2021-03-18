@@ -23,8 +23,16 @@ import { useCurrentLocation, getSpots, getWeather } from "./actions/spots";
 const MapView = ({ isAuthenticated, load_user }) => {
   const [name, setName] = React.useState([]);
   const [spots, setSpots] = React.useState([]);
+  const [weather, setWeather] = React.useState<any | null>(null);
 
-  const { location, weather } = useCurrentLocation();
+  const location = useCurrentLocation();
+
+  navigator.geolocation.getCurrentPosition((spotlocation) => {
+    getWeather(
+      spotlocation.coords.latitude,
+      spotlocation.coords.longitude
+    ).then((data) => setWeather(data));
+  });
 
   React.useEffect(() => {
     load_user().then((data) => setName(data));

@@ -50,7 +50,6 @@ export const useCurrentLocation = (options = geolocationOptions) => {
   // store error message in state
   const [error, setError] = React.useState<any | null>(null);
   const [location, setLocation] = React.useState<any | null>(null);
-  const [weather, setWeather] = React.useState<any | null>(null);
 
   React.useEffect(() => {
     // If the geolocation is not defined in the used browser you can handle it as an error
@@ -68,14 +67,12 @@ export const useCurrentLocation = (options = geolocationOptions) => {
       latitude,
       longitude,
     });
-    getWeather(latitude, longitude).then((data) => setWeather(data));
   };
   const handleError = (error) => {
     setError(error.message);
     Toast("Something went wrong!", "warning");
   };
-  console.log(weather);
-  return { location, weather };
+  return location;
 };
 
 //geolocation options for leaflet map

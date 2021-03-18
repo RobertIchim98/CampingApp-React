@@ -29,7 +29,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   React.useEffect(() => {
     load_user().then((data) => setName(data));
   }, []);
-  const { location, weather } = useCurrentLocation();
+  const location = useCurrentLocation();
 
   const [formData, setFormData] = React.useState({
     title: "",
