@@ -36,7 +36,7 @@ export const addSpot = async (title, description, owner, spotlocation) => {
       body,
       config
     );
-    console.log(res);
+    return res;
   } catch (err) {
     console.log("Location error" + err);
   }

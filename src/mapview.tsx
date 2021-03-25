@@ -11,6 +11,7 @@ import {
   IonSlide,
   IonToolbar,
   IonSkeletonText,
+  IonText,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
@@ -30,34 +31,35 @@ const MapView = ({ isAuthenticated, load_user }) => {
   const [name, setName] = React.useState([]);
   const [spots, setSpots] = React.useState([]);
   const [weather, setWeather] = React.useState<any | null>(null);
+  const [location, setLocation] = React.useState<any | null>(null);
 
-  const location = useCurrentLocation();
+  //const location = useCurrentLocation();
 
   React.useEffect(() => {
     load_user().then((data) => setName(data));
     getSpots().then((data) => setSpots(data));
-  }, []);
 
-  React.useEffect(() => {
     getPosition().then((position: any) => {
+      const { latitude, longitude } = position.coords;
+      setLocation({
+        latitude,
+        longitude,
+      });
       getWeather(position.coords.latitude, position.coords.longitude).then(
         (weather) => {
           setWeather(weather);
           console.log(weather);
         }
       );
-    });
-
-    setInterval(() => {
-      getPosition().then((position: any) => {
+      setInterval(() => {
         getWeather(position.coords.latitude, position.coords.longitude).then(
           (weather) => {
             setWeather(weather);
             console.log("10 min Weather: " + weather);
           }
         );
-      });
-    }, 600000);
+      }, 600000);
+    });
   }, []);
 
   if (!isAuthenticated) {
@@ -68,40 +70,50 @@ const MapView = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
+
         <IonSearchbar color="primary" animated={true}></IonSearchbar>
-        {location ? (
-          <MapContainer
-            center={[location.latitude, location.longitude]}
-            zoom={6}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <IonCard>
+          {location ? (
+            <MapContainer
+              center={[location.latitude, location.longitude]}
+              zoom={6}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[location.latitude, location.longitude]}>
+                <Popup>You are here</Popup>
+              </Marker>
+              {spots.map((spot) => {
+                return (
+                  <Marker position={spot.lat_lon} key={spot.id}>
+                    <Popup>{spot.title}</Popup>
+                  </Marker>
+                );
+              })}
+            </MapContainer>
+          ) : (
+            <IonSkeletonText
+              animated
+              style={{ width: "100%", height: "60vw" }}
             />
-            <Marker position={[location.latitude, location.longitude]}>
-              <Popup>You are here</Popup>
-            </Marker>
-            {spots.map((spot) => {
-              return (
-                <Marker position={spot.lat_lon} key={spot.id}>
-                  <Popup>{spot.title}</Popup>
-                </Marker>
-              );
-            })}
-          </MapContainer>
-        ) : (
-          <IonSkeletonText animated style={{ width: "100%", height: "60vw" }} />
-        )}
+          )}
+        </IonCard>
         <IonCard>
           {weather ? (
-            <p>
-              {weather.weather[0].description}{" "}
-              {(weather.main.temp - 273.15).toFixed()}
-              {"°C"}
-            </p>
+            <IonText class="ion-text-center" color="dark">
+              <h5>
+                {weather.weather[0].description} <br />
+                {(weather.main.temp - 273.15).toFixed()}
+                {"°C"}
+              </h5>
+            </IonText>
           ) : (
-            <p>..Loading Weather</p>
+            <IonText class="ion-text-center" color="dark">
+              <h5>..Loading Weather</h5>
+            </IonText>
           )}
         </IonCard>
         <IonSlides pager={true} options={{ pagination: true }}>
