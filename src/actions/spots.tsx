@@ -84,9 +84,21 @@ const geolocationOptions = {
 
 // Get Weather
 export const getWeather = async (lat, lon) => {
-  const response = await axios({
-    url: `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${"53f424fdc9808492a1f4622478cc19b3"}`,
-    method: "get",
+  try {
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${"53f424fdc9808492a1f4622478cc19b3"}`
+    );
+    if (response.status === 200) {
+      return await response.json();
+    }
+    return response.statusText;
+  } catch (err) {
+    Toast("Could not fetch Weather", "warning");
+  }
+};
+
+export const getPosition = () => {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
-  return response.data;
 };

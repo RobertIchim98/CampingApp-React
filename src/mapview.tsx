@@ -18,7 +18,13 @@ import { checkAuthenticated, load_user } from "./actions/auth";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
 import campimg from "./assets/img/campimg.jpeg";
-import { useCurrentLocation, getSpots, getWeather } from "./actions/spots";
+import {
+  useCurrentLocation,
+  getSpots,
+  getWeather,
+  getPosition,
+} from "./actions/spots";
+import { Toast } from "./toast";
 
 const MapView = ({ isAuthenticated, load_user }) => {
   const [name, setName] = React.useState([]);
@@ -27,16 +33,31 @@ const MapView = ({ isAuthenticated, load_user }) => {
 
   const location = useCurrentLocation();
 
-  navigator.geolocation.getCurrentPosition((spotlocation) => {
-    getWeather(
-      spotlocation.coords.latitude,
-      spotlocation.coords.longitude
-    ).then((data) => setWeather(data));
-  });
-
   React.useEffect(() => {
     load_user().then((data) => setName(data));
     getSpots().then((data) => setSpots(data));
+  }, []);
+
+  React.useEffect(() => {
+    getPosition().then((position: any) => {
+      getWeather(position.coords.latitude, position.coords.longitude).then(
+        (weather) => {
+          setWeather(weather);
+          console.log(weather);
+        }
+      );
+    });
+
+    setInterval(() => {
+      getPosition().then((position: any) => {
+        getWeather(position.coords.latitude, position.coords.longitude).then(
+          (weather) => {
+            setWeather(weather);
+            console.log("10 min Weather: " + weather);
+          }
+        );
+      });
+    }, 600000);
   }, []);
 
   if (!isAuthenticated) {
@@ -72,17 +93,21 @@ const MapView = ({ isAuthenticated, load_user }) => {
         ) : (
           <IonSkeletonText animated style={{ width: "100%", height: "60vw" }} />
         )}
-        {weather ? (
-          <p>
-            {weather["name"]}: {weather.weather[0].description}
-          </p>
-        ) : (
-          <p>..Loading Weather</p>
-        )}
+        <IonCard>
+          {weather ? (
+            <p>
+              {weather.weather[0].description}{" "}
+              {(weather.main.temp - 273.15).toFixed()}
+              {"°C"}
+            </p>
+          ) : (
+            <p>..Loading Weather</p>
+          )}
+        </IonCard>
         <IonSlides pager={true} options={{ pagination: true }}>
           {spots.map((spot) => {
             return (
-              <IonSlide>
+              <IonSlide key={spot.id}>
                 <IonCard class="ion-text-center" style={{ height: "100vw" }}>
                   <IonImg src={campimg} style={{ height: "50vw" }} />
                   <IonCardTitle>{spot.title}</IonCardTitle>
