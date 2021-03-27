@@ -31,7 +31,7 @@ const greetPage = ({ isAuthenticated }) => {
           <IonLabel>
             <IonButton
               expand="block"
-              color="success"
+              color="primary"
               size="large"
               shape="round"
               href="/login"

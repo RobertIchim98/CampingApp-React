@@ -118,10 +118,15 @@ const MapView = ({ isAuthenticated, load_user }) => {
         </IonCard>
         <IonSlides pager={true} options={{ pagination: true }}>
           {spots.map((spot) => {
+            console.log(spot.photo);
+            console.log(`http://localhost:8000${spot.photo}`);
             return (
               <IonSlide key={spot.id}>
                 <IonCard class="ion-text-center" style={{ height: "100vw" }}>
-                  <IonImg src={campimg} style={{ height: "50vw" }} />
+                  <IonImg
+                    src={`http://localhost:8000${spot.photo}`}
+                    style={{ height: "50vw" }}
+                  />
                   <IonCardTitle>{spot.title}</IonCardTitle>
                   <IonCardContent>
                     <p>{spot.description}</p>

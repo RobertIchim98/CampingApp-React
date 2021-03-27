@@ -2,12 +2,28 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { checkAuthenticated, load_user } from "./actions/auth";
+import { Photo, usePhotoGallery } from "./usePhotoGallery";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
-import campimg from "./assets/img/campimg.jpeg";
-import backpack from "./assets/img/backpack.png";
 import { useCurrentLocation, addSpot } from "./actions/spots";
-import { informationCircleOutline, mapOutline } from "ionicons/icons";
+import {
+  informationCircleOutline,
+  mapOutline,
+  camera,
+  trash,
+  close,
+} from "ionicons/icons";
+
+import {
+  IonTitle,
+  IonFab,
+  IonFabButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonActionSheet,
+} from "@ionic/react";
+
 import {
   IonButton,
   IonCard,
@@ -17,7 +33,6 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonModal,
   IonPage,
   IonSkeletonText,
   IonToolbar,
@@ -25,12 +40,18 @@ import {
 import { Toast } from "./toast";
 
 const MySpots = ({ isAuthenticated, load_user }) => {
+  //get username
   const [name, setName] = React.useState([]);
-  //const [showModal, setShowModal] = React.useState(false);
 
+  //photo stuff
+  const { photos, takePhoto } = usePhotoGallery();
+
+  //get user data
   React.useEffect(() => {
     load_user().then((data) => setName(data));
   }, []);
+
+  //get the current location
   const location = useCurrentLocation();
 
   const [formData, setFormData] = React.useState({
@@ -46,6 +67,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // handle spot submit
   const onSubmit = (e) => {
     e.preventDefault();
     if (spotlocation != null) {
@@ -120,6 +142,11 @@ const MySpots = ({ isAuthenticated, load_user }) => {
               required
             ></IonInput>
           </IonItem>
+          <IonFab vertical="bottom" horizontal="center" slot="fixed">
+            <IonFabButton onClick={() => takePhoto()}>
+              <IonIcon icon={camera}></IonIcon>
+            </IonFabButton>
+          </IonFab>
           <IonButton
             shape="round"
             type="submit"
@@ -129,6 +156,15 @@ const MySpots = ({ isAuthenticated, load_user }) => {
             Add Spot
           </IonButton>
         </form>
+        <IonGrid>
+          <IonRow>
+            {photos.map((photo, index) => (
+              <IonCol size="6" key={index}>
+                <IonImg src={photo.webviewPath} />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
@@ -141,22 +177,3 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { checkAuthenticated, load_user })(
   MySpots
 );
-
-/*
-        <IonModal isOpen={showModal}>
-          <div>
-            <h1>Hello User! You can enter data here:</h1>
-          </div>
-          <IonInput placeholder="Title"></IonInput>
-          <IonButton shape="round" class="button_primary_white_text">
-            Submit
-          </IonButton>
-          <IonButton
-            shape="round"
-            class="button_secondary_white_text"
-            onClick={() => setShowModal(false)}
-          >
-            Cancel
-          </IonButton>
-        </IonModal>
-*/
