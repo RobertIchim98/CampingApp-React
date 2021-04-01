@@ -27,6 +27,7 @@
     "jwt-decode": "^3.1.2",
     "leaflet": "^1.7.1",
     "node-gyp": "^7.1.2",
+    "node-sass": "^4.14.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-hook-form": "^6.15.1",

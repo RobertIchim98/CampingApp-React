@@ -14,15 +14,7 @@ import {
   close,
 } from "ionicons/icons";
 
-import {
-  IonTitle,
-  IonFab,
-  IonFabButton,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonActionSheet,
-} from "@ionic/react";
+import { IonFab, IonFabButton, IonGrid, IonRow, IonCol } from "@ionic/react";
 
 import {
   IonButton,
@@ -38,13 +30,15 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { Toast } from "./toast";
+import { title } from "node:process";
 
 const MySpots = ({ isAuthenticated, load_user }) => {
   //get username
   const [name, setName] = React.useState([]);
+  const [spot, setSpot] = React.useState<any | null>(null);
 
-  //photo stuff
-  const { photos, takePhoto } = usePhotoGallery();
+  // set photo
+  const { photos, takePhoto, blob } = usePhotoGallery();
 
   //get user data
   React.useEffect(() => {
@@ -52,37 +46,80 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   }, []);
 
   //get the current location
-  const location = useCurrentLocation();
+  const locationUser = useCurrentLocation();
 
   const [formData, setFormData] = React.useState({
     title: "",
     description: "",
     spotlocation: {},
   });
-  const { title, description, spotlocation } = formData;
-  navigator.geolocation.getCurrentPosition((spotlocation) => {
-    setFormData({ ...formData, spotlocation: spotlocation });
+  navigator.geolocation.getCurrentPosition((spot) => {
+    //setFormData({ ...formData, spotlocation: spot });
+    setSpot(spot);
   });
 
-  const onChange = (e) =>
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    //console.log(title, description);
+  };
 
   // handle spot submit
   const onSubmit = (e) => {
     e.preventDefault();
-    if (spotlocation != null) {
-      addSpot(title, description, name["username"], spotlocation).then(
-        (res) => {
-          if (res.status == 200) {
-            Toast("Spot Added!", "primary");
-          } else {
-            Toast("Could not add Spot!", "danger");
-          }
+    //console.log(formData);
+    const { title, description, spotlocation } = formData;
+    // title, description, name["username"], spot, photos[0]
+    const newformData = new FormData();
+
+    const location =
+      "SRID=4326;POINT ( " +
+      spot.coords.longitude +
+      " " +
+      spot.coords.latitude +
+      ")";
+
+    newformData.append("location", location);
+    newformData.append("title", title);
+    newformData.append("owner", name["username"]);
+    newformData.append("description", description);
+    newformData.append("photo", blob, photos[0].filepath);
+
+    if (spot != null) {
+      addSpot(newformData).then((res) => {
+        console.log(formData);
+        console.log(photos);
+        if (res.status == 200) {
+          Toast("Spot Added!", "primary");
+        } else {
+          //console.log(res);
+          console.log(res);
+          Toast("Missing some info!", "danger");
         }
-      );
+      });
+    }
+    /*
+    if (spotlocation != null) {
+      addSpot(
+        title,
+        description,
+        name["username"],
+        spotlocation,
+        photos[0].webviewPath
+      ).then((res) => {
+        console.log(title, description, name["username"], spotlocation);
+        console.log(photos);
+        if (res.status == 200) {
+          Toast("Spot Added!", "primary");
+        } else {
+          //console.log(res);
+          console.log(res.data);
+          Toast("Missing some info!", "danger");
+        }
+      });
     } else {
       Toast("Cant find location", "danger");
     }
+    */
   };
 
   if (!isAuthenticated) {
@@ -96,9 +133,9 @@ const MySpots = ({ isAuthenticated, load_user }) => {
         <h1>Hello {name["first_name"]}!</h1>
         <IonLabel>Where is the spot?</IonLabel>
         <IonCard>
-          {location ? (
+          {locationUser ? (
             <MapContainer
-              center={[location.latitude, location.longitude]}
+              center={[locationUser.latitude, locationUser.longitude]}
               zoom={15}
               scrollWheelZoom={false}
             >
@@ -106,7 +143,9 @@ const MySpots = ({ isAuthenticated, load_user }) => {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[location.latitude, location.longitude]}>
+              <Marker
+                position={[locationUser.latitude, locationUser.longitude]}
+              >
                 <Popup>You are here</Popup>
               </Marker>
             </MapContainer>
@@ -142,13 +181,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
               required
             ></IonInput>
           </IonItem>
-          <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            <IonFabButton onClick={() => takePhoto()}>
-              <IonIcon icon={camera}></IonIcon>
-            </IonFabButton>
-          </IonFab>
           <IonButton
-            shape="round"
             type="submit"
             class="button_primary_white_text"
             style={{ width: "100%" }}
@@ -156,6 +189,11 @@ const MySpots = ({ isAuthenticated, load_user }) => {
             Add Spot
           </IonButton>
         </form>
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton onClick={() => takePhoto()}>
+            <IonIcon icon={camera}></IonIcon>
+          </IonFabButton>
+        </IonFab>
         <IonGrid>
           <IonRow>
             {photos.map((photo, index) => (
@@ -177,3 +215,21 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { checkAuthenticated, load_user })(
   MySpots
 );
+
+/*
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton onClick={() => takePhoto()}>
+            <IonIcon icon={camera}></IonIcon>
+          </IonFabButton>
+        </IonFab>
+        <IonGrid>
+          <IonRow>
+            {photos.map((photo, index) => (
+              <IonCol size="6" key={index}>
+                <IonImg src={photo.webviewPath} />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+
+*/

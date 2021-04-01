@@ -12,13 +12,18 @@ import {
   IonToolbar,
   IonSkeletonText,
   IonText,
+  IonRefresher,
+  IonRefresherContent,
+  IonCardSubtitle,
+  IonTitle,
+  IonDatetime,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { checkAuthenticated, load_user } from "./actions/auth";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
-import campimg from "./assets/img/campimg.jpeg";
+import noimg from "./assets/img/noimg.png";
 import {
   useCurrentLocation,
   getSpots,
@@ -37,7 +42,20 @@ const MapView = ({ isAuthenticated, load_user }) => {
 
   React.useEffect(() => {
     load_user().then((data) => setName(data));
-    getSpots().then((data) => setSpots(data));
+
+    // reverse the array to get the newest spots
+    getSpots().then((data) => setSpots(data.reverse()));
+
+    setInterval(() => {
+      getPosition().then((position: any) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({
+          latitude,
+          longitude,
+        });
+        console.log("new_location:" + location);
+      });
+    }, 3000);
 
     getPosition().then((position: any) => {
       const { latitude, longitude } = position.coords;
@@ -70,7 +88,6 @@ const MapView = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
-
         <IonSearchbar color="primary" animated={true}></IonSearchbar>
         <IonCard>
           {location ? (
@@ -103,14 +120,47 @@ const MapView = ({ isAuthenticated, load_user }) => {
         </IonCard>
         <IonCard>
           {weather ? (
-            <IonText class="ion-text-center" color="dark">
+            <div style={{ padding: "1em" }}>
+              <h6 style={{ color: "black" }}>{weather.name}</h6>
+              <p>
+                {Date().toLocaleString().split("", 21)} ,{" "}
+                {weather.weather[0].description}
+              </p>
+              <h1 style={{ color: "black" }} className="ion-text-center">
+                {(weather.main.temp - 273.15).toFixed()}
+                {"°C"}
+                <IonImg
+                  className="ion-center"
+                  style={{
+                    width: "20%",
+                    height: "20%",
+                    align: "middle",
+                    //float: "right",
+                  }}
+                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                />
+              </h1>
+            </div>
+          ) : (
+            /*<IonText class="ion-text-center" color="dark">
               <h5>
-                {weather.weather[0].description} <br />
+                {weather.weather[0].description}
+                <IonImg
+                  style={{
+                    width: "20%",
+                    height: "20%",
+                    //"vertical-align": "middle",
+                    //float: "right",
+                  }}
+                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                />
+              </h5>
+              <h5>
                 {(weather.main.temp - 273.15).toFixed()}
                 {"°C"}
               </h5>
             </IonText>
-          ) : (
+            */
             <IonText class="ion-text-center" color="dark">
               <h5>..Loading Weather</h5>
             </IonText>
@@ -118,23 +168,36 @@ const MapView = ({ isAuthenticated, load_user }) => {
         </IonCard>
         <IonSlides pager={true} options={{ pagination: true }}>
           {spots.map((spot) => {
-            console.log(spot.photo);
-            console.log(`http://localhost:8000${spot.photo}`);
-            return (
-              <IonSlide key={spot.id}>
-                <IonCard class="ion-text-center" style={{ height: "100vw" }}>
-                  <IonImg
-                    src={`http://localhost:8000${spot.photo}`}
-                    style={{ height: "50vw" }}
-                  />
-                  <IonCardTitle>{spot.title}</IonCardTitle>
-                  <IonCardContent>
-                    <p>{spot.description}</p>
-                    <p>by {spot.owner}</p>
-                  </IonCardContent>
-                </IonCard>
-              </IonSlide>
-            );
+            if (spot.photo == "/media/nopic") {
+              return (
+                <IonSlide key={spot.id}>
+                  <IonCard class="ion-text-center">
+                    <IonImg src={noimg} />
+                    <IonCardTitle>{spot.title}</IonCardTitle>
+                    <IonCardContent>
+                      <p>{spot.description}</p>
+                      <p>by {spot.owner}</p>
+                    </IonCardContent>
+                  </IonCard>
+                </IonSlide>
+              );
+            } else {
+              return (
+                <IonSlide key={spot.id}>
+                  <IonCard class="ion-text-center">
+                    <IonImg
+                      src={`http://localhost:8000${spot.photo}`}
+                      style={{ height: "50vw" }}
+                    />
+                    <IonCardTitle>{spot.title}</IonCardTitle>
+                    <IonCardContent>
+                      <p>{spot.description}</p>
+                      <p>by {spot.owner}</p>
+                    </IonCardContent>
+                  </IonCard>
+                </IonSlide>
+              );
+            }
           })}
         </IonSlides>
       </IonContent>

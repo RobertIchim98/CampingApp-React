@@ -9,11 +9,14 @@ import {
   CameraPhoto,
   Capacitor,
   FilesystemDirectory,
+  Plugins,
 } from "@capacitor/core";
 
 export function usePhotoGallery() {
   const { getPhoto } = useCamera();
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [blob, setBlob] = useState<any | null>(null);
+  const { deleteFile, getUri, readFile, writeFile } = useFilesystem();
 
   const takePhoto = async () => {
     const cameraPhoto = await getPhoto({
@@ -30,13 +33,14 @@ export function usePhotoGallery() {
       ...photos,
     ];
     setPhotos(newPhotos);
+    setBlob(await fetch(cameraPhoto.webPath).then((r) => r.blob()));
   };
   return {
     photos,
     takePhoto,
+    blob,
   };
 }
-
 export interface Photo {
   filepath: string;
   webviewPath?: string;

@@ -3,14 +3,17 @@ import { Route } from "react-router-dom";
 
 import {
   IonApp,
+  IonContent,
+  IonFab,
   IonIcon,
   IonLabel,
+  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
 } from "@ionic/react";
-import { mapOutline, navigateOutline, settingsOutline } from "ionicons/icons";
+import { mapSharp, navigateSharp, settingsSharp, person } from "ionicons/icons";
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 import Login from "./Login";
@@ -34,7 +37,6 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-
 import { Provider } from "react-redux";
 import store from "./store";
 import { IonReactRouter } from "@ionic/react-router";
@@ -58,16 +60,16 @@ const App: React.FC = () => {
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
                 <IonTabButton href="/mapview" tab="mapview">
-                  <IonIcon icon={mapOutline}></IonIcon>
+                  <IonIcon icon={mapSharp}></IonIcon>
                   <IonLabel>Discover</IonLabel>
                 </IonTabButton>
                 <IonTabButton href="/spots" tab="spots">
-                  <IonIcon icon={navigateOutline}></IonIcon>
+                  <IonIcon icon={navigateSharp}></IonIcon>
                   <IonLabel>My Spots</IonLabel>
                 </IonTabButton>
                 <IonTabButton href="/settings" tab="settings">
-                  <IonIcon icon={settingsOutline}></IonIcon>
-                  <IonLabel>Settings</IonLabel>
+                  <IonIcon icon={person}></IonIcon>
+                  <IonLabel>Profile</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>
