@@ -77,49 +77,32 @@ const MySpots = ({ isAuthenticated, load_user }) => {
       " " +
       spot.coords.latitude +
       ")";
-
-    newformData.append("location", location);
-    newformData.append("title", title);
-    newformData.append("owner", name["username"]);
-    newformData.append("description", description);
-    newformData.append("photo", blob, photos[0].filepath);
-
-    if (spot != null) {
-      addSpot(newformData).then((res) => {
-        console.log(formData);
-        console.log(photos);
-        if (res.status == 200) {
-          Toast("Spot Added!", "primary");
-        } else {
-          //console.log(res);
-          console.log(res);
-          Toast("Missing some info!", "danger");
-        }
-      });
-    }
-    /*
-    if (spotlocation != null) {
-      addSpot(
-        title,
-        description,
-        name["username"],
-        spotlocation,
-        photos[0].webviewPath
-      ).then((res) => {
-        console.log(title, description, name["username"], spotlocation);
-        console.log(photos);
-        if (res.status == 200) {
-          Toast("Spot Added!", "primary");
-        } else {
-          //console.log(res);
-          console.log(res.data);
-          Toast("Missing some info!", "danger");
-        }
-      });
+    if (photos[0] !== undefined || photos.length != 0) {
+      console.log(photos);
+      newformData.append("location", location);
+      newformData.append("title", title);
+      newformData.append("owner", name["username"]);
+      newformData.append("description", description);
+      newformData.append("photo", blob, photos[0].filepath);
     } else {
-      Toast("Cant find location", "danger");
+      newformData.append("location", location);
+      newformData.append("title", title);
+      newformData.append("owner", name["username"]);
+      newformData.append("description", description);
     }
-    */
+
+    addSpot(newformData).then((res) => {
+      console.log(formData);
+      console.log(photos);
+      if (res === 200) {
+        Toast("Spot Added!", "primary");
+      } else {
+        //console.log(res);
+
+        console.log(res["responseText"]);
+        Toast("Missing some info!", "danger");
+      }
+    });
   };
 
   if (!isAuthenticated) {
@@ -183,6 +166,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
           </IonItem>
           <IonButton
             type="submit"
+            shape="round"
             class="button_primary_white_text"
             style={{ width: "100%" }}
           >
@@ -215,21 +199,3 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { checkAuthenticated, load_user })(
   MySpots
 );
-
-/*
-        <IonFab vertical="bottom" horizontal="center" slot="fixed">
-          <IonFabButton onClick={() => takePhoto()}>
-            <IonIcon icon={camera}></IonIcon>
-          </IonFabButton>
-        </IonFab>
-        <IonGrid>
-          <IonRow>
-            {photos.map((photo, index) => (
-              <IonCol size="6" key={index}>
-                <IonImg src={photo.webviewPath} />
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
-
-*/

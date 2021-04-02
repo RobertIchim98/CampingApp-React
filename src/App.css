@@ -8,3 +8,9 @@
     display: flex !important;
     align-items: center !important;
 }
+
+.weathercard {
+    --background: var(--ion-color-primary);
+    --color: white;
+    padding-left: 1em;
+}

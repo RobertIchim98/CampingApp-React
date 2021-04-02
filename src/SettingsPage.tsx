@@ -32,18 +32,20 @@ const SettingsPage = ({ logout, isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
-        <IonCard class="ion-text-center">
-          <IonAvatar style={{ align: "center" }}>
-            <IonImg src={noimg} />
-          </IonAvatar>
-          <IonText>
-            <h5>
-              {user["first_name"]} {user["last_name"]}
-            </h5>
-            <h5>{user["email"]}</h5>
-            <h5>{user["username"]}</h5>
-          </IonText>
-        </IonCard>
+        <div style={{ alignContent: "center" }}>
+          <IonCard class="ion-text-center">
+            <IonAvatar>
+              <IonImg src={noimg} />
+            </IonAvatar>
+            <IonText>
+              <h5>
+                {user["first_name"]} {user["last_name"]}
+              </h5>
+              <h5>{user["email"]}</h5>
+              <h5>{user["username"]}</h5>
+            </IonText>
+          </IonCard>
+        </div>
         <div>Settings</div>
         <IonButton onClick={logout}>Logout</IonButton>
       </IonContent>

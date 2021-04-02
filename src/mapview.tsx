@@ -17,9 +17,13 @@ import {
   IonCardSubtitle,
   IonTitle,
   IonDatetime,
+  IonModal,
+  IonButton,
+  IonHeader,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
+import "./App.css";
 import { checkAuthenticated, load_user } from "./actions/auth";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
@@ -37,6 +41,7 @@ const MapView = ({ isAuthenticated, load_user }) => {
   const [spots, setSpots] = React.useState([]);
   const [weather, setWeather] = React.useState<any | null>(null);
   const [location, setLocation] = React.useState<any | null>(null);
+  const [showModal, setShowModal] = React.useState(false);
 
   //const location = useCurrentLocation();
 
@@ -44,7 +49,7 @@ const MapView = ({ isAuthenticated, load_user }) => {
     load_user().then((data) => setName(data));
 
     // reverse the array to get the newest spots
-    getSpots().then((data) => setSpots(data.reverse()));
+    getSpots().then((data) => setSpots(data));
 
     setInterval(() => {
       getPosition().then((position: any) => {
@@ -101,12 +106,22 @@ const MapView = ({ isAuthenticated, load_user }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[location.latitude, location.longitude]}>
-                <Popup>You are here</Popup>
+                <Popup>
+                  <button>Click here</button>
+                </Popup>
               </Marker>
               {spots.map((spot) => {
                 return (
                   <Marker position={spot.lat_lon} key={spot.id}>
-                    <Popup>{spot.title}</Popup>
+                    <Popup>
+                      <h6 style={{ textAlign: "center" }}>{spot.title}</h6>
+                      <IonButton
+                        color="secondary"
+                        href={`https://www.google.com/maps/search/?api=1&query=${spot.lat_lon}`}
+                      >
+                        Open with Google Maps
+                      </IonButton>
+                    </Popup>
                   </Marker>
                 );
               })}
@@ -118,49 +133,46 @@ const MapView = ({ isAuthenticated, load_user }) => {
             />
           )}
         </IonCard>
-        <IonCard>
+        <IonCard className="weathercard">
           {weather ? (
             <div style={{ padding: "1em" }}>
               <h6 style={{ color: "black" }}>{weather.name}</h6>
               <p>
-                {Date().toLocaleString().split("", 21)} ,{" "}
-                {weather.weather[0].description}
+                <b>
+                  {Date().toLocaleString().split("", 21)} ,{" "}
+                  {weather.weather[0].description}
+                </b>
               </p>
-              <h1 style={{ color: "black" }} className="ion-text-center">
-                {(weather.main.temp - 273.15).toFixed()}
-                {"°C"}
-                <IonImg
-                  className="ion-center"
-                  style={{
-                    width: "20%",
-                    height: "20%",
-                    align: "middle",
-                    //float: "right",
-                  }}
-                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                />
-              </h1>
+              <table
+                style={{
+                  width: "100%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                <tr>
+                  <td style={{ paddingLeft: "2em" }}>
+                    <h1 style={{ color: "black" }} className="ion-text-center">
+                      {(weather.main.temp - 273.15).toFixed()}
+                      {"°C"}
+                    </h1>
+                  </td>
+                  <td style={{ paddingLeft: "2em" }}>
+                    {" "}
+                    <IonImg
+                      className="ion-center"
+                      style={{
+                        width: "60%",
+                        height: "60%",
+                        verticalAlign: "center",
+                      }}
+                      src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                    />
+                  </td>
+                </tr>
+              </table>
             </div>
           ) : (
-            /*<IonText class="ion-text-center" color="dark">
-              <h5>
-                {weather.weather[0].description}
-                <IonImg
-                  style={{
-                    width: "20%",
-                    height: "20%",
-                    //"vertical-align": "middle",
-                    //float: "right",
-                  }}
-                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                />
-              </h5>
-              <h5>
-                {(weather.main.temp - 273.15).toFixed()}
-                {"°C"}
-              </h5>
-            </IonText>
-            */
             <IonText class="ion-text-center" color="dark">
               <h5>..Loading Weather</h5>
             </IonText>
@@ -168,7 +180,7 @@ const MapView = ({ isAuthenticated, load_user }) => {
         </IonCard>
         <IonSlides pager={true} options={{ pagination: true }}>
           {spots.map((spot) => {
-            if (spot.photo == "/media/nopic") {
+            if (spot.photo == "/media/nopic" || spot.photo == null) {
               return (
                 <IonSlide key={spot.id}>
                   <IonCard class="ion-text-center">
@@ -189,11 +201,11 @@ const MapView = ({ isAuthenticated, load_user }) => {
                       src={`http://localhost:8000${spot.photo}`}
                       style={{ height: "50vw" }}
                     />
-                    <IonCardTitle>{spot.title}</IonCardTitle>
-                    <IonCardContent>
-                      <p>{spot.description}</p>
-                      <p>by {spot.owner}</p>
-                    </IonCardContent>
+                    <IonCardTitle onClick={() => setShowModal(true)}>
+                      {spot.title}
+                    </IonCardTitle>
+                    <p>{spot.description}</p>
+                    <p>by {spot.owner}</p>
                   </IonCard>
                 </IonSlide>
               );
@@ -212,3 +224,37 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { checkAuthenticated, load_user })(
   MapView
 );
+
+/*
+                  <IonModal
+                    isOpen={showModal}
+                    cssClass="my-custom-class"
+                    swipeToClose={true}
+                  >
+                    <IonContent>
+                      <IonToolbar></IonToolbar>
+                      <h1>{spot.title}</h1>
+                      <IonImg
+                        src={`http://localhost:8000${spot.photo}`}
+                        style={{ height: "50vw" }}
+                      />
+                      <h3>{spot.description}</h3>
+
+                      <IonButton
+                        shape="round"
+                        color="secondary"
+                        href={`https://www.google.com/maps/search/?api=1&query=${spot.lat_lon}`}
+                      >
+                        Open in Google Maps
+                      </IonButton>
+                      <IonImg></IonImg>
+                      <IonButton
+                        shape="round"
+                        onClick={() => setShowModal(false)}
+                      >
+                        Close Modal
+                      </IonButton>
+                    </IonContent>
+                  </IonModal>
+
+                  */
