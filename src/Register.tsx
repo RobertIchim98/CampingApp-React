@@ -47,13 +47,29 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     if (password === re_password) {
-      signup(username, first_name, last_name, email, password, re_password);
-      setAccountCreated(true);
+      signup(
+        username,
+        first_name,
+        last_name,
+        email,
+        password,
+        re_password
+      ).then((res) => {
+        if (res.status === 201) {
+          console.log(res);
+          Toast("Registration Successful!", "primary");
+          setAccountCreated(true);
+        } else {
+          Toast("Could not Register! Check your info", "danger");
+        }
+      });
+    } else {
+      Toast("Passwords Not Matching!", "danger");
     }
   };
 
-  console.log("isAuthenticated:" + isAuthenticated);
   if (isAuthenticated) {
     return <Redirect to="/mapview" />;
   }
@@ -153,20 +169,20 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
             <IonIcon slot="start" icon={bonfireOutline} />
             Register
           </IonButton>
-          <p className="ion-text-center">Already have an account?</p>
-          <div className="ion-text-center">
-            <IonButton
-              size="small"
-              color="success"
-              fill="outline"
-              shape="round"
-              href="/login"
-            >
-              <IonIcon slot="start" icon={logInOutline} />
-              Login
-            </IonButton>
-          </div>
         </form>
+        <p className="ion-text-center">Already have an account?</p>
+        <div className="ion-text-center">
+          <IonButton
+            size="small"
+            color="success"
+            fill="outline"
+            shape="round"
+            href="/login"
+          >
+            <IonIcon slot="start" icon={logInOutline} />
+            Login
+          </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

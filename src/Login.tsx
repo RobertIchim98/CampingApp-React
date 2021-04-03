@@ -19,6 +19,7 @@ import {
   personOutline,
   lockClosedOutline,
 } from "ionicons/icons";
+import { Toast } from "./toast";
 
 const LoginPage = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -32,7 +33,13 @@ const LoginPage = ({ login, isAuthenticated }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    login(email, password);
+    login(email, password).then((res) => {
+      if (res.status === 200) {
+        Toast("Welcome!", "primary");
+      } else {
+        Toast("Email/Password not correct", "danger");
+      }
+    });
   };
 
   if (isAuthenticated) {

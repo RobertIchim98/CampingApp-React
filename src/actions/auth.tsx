@@ -101,12 +101,13 @@ export const login = (email, password) => async (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
-
     dispatch(load_user());
+    return res;
   } catch (err) {
     dispatch({
       type: LOGIN_FAIL,
     });
+    return err;
   }
 };
 
@@ -148,9 +149,13 @@ export const signup = (
       type: SIGNUP_SUCCESS,
       payload: res.data,
     });
+    console.log(res);
+    return res;
   } catch (err) {
     dispatch({
       type: SIGNUP_FAIL,
     });
+    console.log(err);
+    return err;
   }
 };
