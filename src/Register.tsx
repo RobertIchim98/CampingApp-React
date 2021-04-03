@@ -153,9 +153,10 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
             <IonIcon slot="start" icon={bonfireOutline} />
             Register
           </IonButton>
-          <IonItem class="ion-text-center" lines="none">
-            <IonLabel>Already have an account?</IonLabel>
+          <p className="ion-text-center">Already have an account?</p>
+          <div className="ion-text-center">
             <IonButton
+              size="small"
               color="success"
               fill="outline"
               shape="round"
@@ -164,7 +165,7 @@ const RegisterPage = ({ signup, isAuthenticated }) => {
               <IonIcon slot="start" icon={logInOutline} />
               Login
             </IonButton>
-          </IonItem>
+          </div>
         </form>
       </IonContent>
     </IonPage>

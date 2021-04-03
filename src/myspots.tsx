@@ -94,12 +94,11 @@ const MySpots = ({ isAuthenticated, load_user }) => {
     addSpot(newformData).then((res) => {
       console.log(formData);
       console.log(photos);
-      if (res === 200) {
+      if (res.status === 200) {
         Toast("Spot Added!", "primary");
       } else {
-        //console.log(res);
-
         console.log(res["responseText"]);
+        console.log(res);
         Toast("Missing some info!", "danger");
       }
     });

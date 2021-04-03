@@ -22,10 +22,9 @@ const greetPage = ({ isAuthenticated }) => {
 
   return (
     <Router>
-      <IonToolbar class="ion-text-center">
-        <IonTitle>Adventurer's Atlas</IonTitle>
-      </IonToolbar>
+      <IonToolbar class="ion-text-center"></IonToolbar>
       <IonContent class="vertical-center">
+        <IonTitle className="ion-text-center">Adventurer's Atlas</IonTitle>
         <IonImg src={tent} />
         <IonItem class="ion-text-center">
           <IonLabel>
@@ -42,7 +41,7 @@ const greetPage = ({ isAuthenticated }) => {
             </IonButton>
           </IonLabel>
         </IonItem>
-        <IonItem class="ion-text-center" lines="none">
+        <IonItem className="ion-text-center" lines="none">
           <IonLabel>
             <h3>Dont have an account?</h3>
             <IonButton
@@ -53,7 +52,7 @@ const greetPage = ({ isAuthenticated }) => {
               href="/register"
             >
               <IonIcon slot="start" icon={bonfireOutline} />
-              Join the community
+              Join us!
             </IonButton>
           </IonLabel>
         </IonItem>

@@ -51,16 +51,14 @@ const MapView = ({ isAuthenticated, load_user }) => {
     // reverse the array to get the newest spots
     getSpots().then((data) => setSpots(data));
 
-    setInterval(() => {
-      getPosition().then((position: any) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({
-          latitude,
-          longitude,
-        });
-        console.log("new_location:" + location);
+    getPosition().then((position: any) => {
+      const { latitude, longitude } = position.coords;
+      setLocation({
+        latitude,
+        longitude,
       });
-    }, 3000);
+      console.log("new_location:" + location);
+    });
 
     getPosition().then((position: any) => {
       const { latitude, longitude } = position.coords;
@@ -93,7 +91,6 @@ const MapView = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
-        <IonSearchbar color="primary" animated={true}></IonSearchbar>
         <IonCard>
           {location ? (
             <MapContainer
@@ -107,19 +104,20 @@ const MapView = ({ isAuthenticated, load_user }) => {
               />
               <Marker position={[location.latitude, location.longitude]}>
                 <Popup>
-                  <button>Click here</button>
+                  <p>You're here!</p>
                 </Popup>
               </Marker>
               {spots.map((spot) => {
                 return (
                   <Marker position={spot.lat_lon} key={spot.id}>
-                    <Popup>
+                    <Popup className="ion-text-center">
                       <h6 style={{ textAlign: "center" }}>{spot.title}</h6>
                       <IonButton
+                        size="small"
                         color="secondary"
                         href={`https://www.google.com/maps/search/?api=1&query=${spot.lat_lon}`}
                       >
-                        Open with Google Maps
+                        Google Maps
                       </IonButton>
                     </Popup>
                   </Marker>

@@ -82,9 +82,10 @@ const LoginPage = ({ login, isAuthenticated }) => {
             Login
           </IonButton>
         </form>
-        <IonItem class="ion-text-center" lines="none">
-          <IonLabel>Don't have an account?</IonLabel>
+        <p className="ion-text-center">Don't have an account?</p>
+        <div className="ion-text-center">
           <IonButton
+            size="small"
             color="secondary"
             fill="outline"
             shape="round"
@@ -93,7 +94,7 @@ const LoginPage = ({ login, isAuthenticated }) => {
             <IonIcon slot="start" icon={bonfireOutline} />
             Join the Community!
           </IonButton>
-        </IonItem>
+        </div>
       </IonContent>
     </IonPage>
   );

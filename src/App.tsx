@@ -50,7 +50,7 @@ const App: React.FC = () => {
         <IonReactRouter>
           <Layouts>
             <IonTabs>
-              <IonRouterOutlet>
+              <IonRouterOutlet animated={false}>
                 <Route path="" component={Greet} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
