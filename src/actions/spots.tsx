@@ -17,7 +17,7 @@ export const addSpot = async (formData) => {
     const res = new XMLHttpRequest();
     res.open("POST", `${process.env.REACT_APP_API_URL}/spot/`, true);
     res.send(formData);
-    return res;
+    return 200;
   } catch (error) {
     if (error.response) {
       console.log("error response: " + error.response);

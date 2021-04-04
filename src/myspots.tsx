@@ -92,9 +92,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
     }
 
     addSpot(newformData).then((res) => {
-      console.log(formData);
-      console.log(photos);
-      if (res.status === 200) {
+      if (res == 200) {
         Toast("Spot Added!", "primary");
       } else {
         console.log(res["responseText"]);
@@ -112,7 +110,7 @@ const MySpots = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
-        <h1>Hello {name["first_name"]}!</h1>
+        {name ? <h1>Hello {name["first_name"]}!</h1> : <p>Can't Find Name</p>}
         <IonLabel>Where is the spot?</IonLabel>
         <IonCard>
           {locationUser ? (

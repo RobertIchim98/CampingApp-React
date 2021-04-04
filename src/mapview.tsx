@@ -6,20 +6,13 @@ import {
   IonContent,
   IonImg,
   IonPage,
-  IonSearchbar,
   IonSlides,
   IonSlide,
   IonToolbar,
   IonSkeletonText,
   IonText,
-  IonRefresher,
-  IonRefresherContent,
-  IonCardSubtitle,
-  IonTitle,
-  IonDatetime,
   IonModal,
   IonButton,
-  IonHeader,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
@@ -46,10 +39,12 @@ const MapView = ({ isAuthenticated, load_user }) => {
   //const location = useCurrentLocation();
 
   React.useEffect(() => {
+    let unmounted = false;
+
     load_user().then((data) => setName(data));
 
     // reverse the array to get the newest spots
-    getSpots().then((data) => setSpots(data));
+    getSpots().then((data) => setSpots(data.reverse()));
 
     getPosition().then((position: any) => {
       const { latitude, longitude } = position.coords;
@@ -59,6 +54,13 @@ const MapView = ({ isAuthenticated, load_user }) => {
       });
       console.log("new_location:" + location);
     });
+    return () => {
+      unmounted = true;
+    };
+  }, []);
+
+  React.useEffect(() => {
+    let unmounted = false;
 
     getPosition().then((position: any) => {
       const { latitude, longitude } = position.coords;
@@ -81,6 +83,9 @@ const MapView = ({ isAuthenticated, load_user }) => {
         );
       }, 600000);
     });
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   if (!isAuthenticated) {
