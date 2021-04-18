@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { checkAuthenticated, load_user } from "./actions/auth";
 import { Photo, usePhotoGallery } from "./usePhotoGallery";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./App.css";
-import { useCurrentLocation, addSpot } from "./actions/spots";
+import { useCurrentLocation, addSpot, getSpots } from "./actions/spots";
+import noimg from "./assets/img/noimg.png";
 import {
   informationCircleOutline,
   mapOutline,
   camera,
   trash,
   close,
+  arrowForward,
 } from "ionicons/icons";
 
-import { IonFab, IonFabButton, IonGrid, IonRow, IonCol } from "@ionic/react";
+import {
+  IonFab,
+  IonFabButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonModal,
+  IonSlides,
+  IonSlide,
+  IonCardTitle,
+  IonCardContent,
+} from "@ionic/react";
 
 import {
   IonButton,
@@ -36,6 +49,10 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   //get username
   const [name, setName] = React.useState([]);
   const [spot, setSpot] = React.useState<any | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [spots, setSpots] = React.useState([]);
+  const [hasSpots, SethasSpots] = React.useState(false);
+  var spotAmount = 0;
 
   // set photo
   const { photos, takePhoto, blob } = usePhotoGallery();
@@ -43,6 +60,9 @@ const MySpots = ({ isAuthenticated, load_user }) => {
   //get user data
   React.useEffect(() => {
     load_user().then((data) => setName(data));
+  }, []);
+  React.useEffect(() => {
+    getSpots().then((data) => setSpots(data.reverse()));
   }, []);
 
   //get the current location
@@ -110,80 +130,165 @@ const MySpots = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
-        {name ? <h1>Hello {name["first_name"]}!</h1> : <p>Can't Find Name</p>}
-        <IonLabel>Where is the spot?</IonLabel>
-        <IonCard>
-          {locationUser ? (
-            <MapContainer
-              center={[locationUser.latitude, locationUser.longitude]}
-              zoom={15}
-              scrollWheelZoom={false}
-            >
-              <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker
-                position={[locationUser.latitude, locationUser.longitude]}
-              >
-                <Popup>You are here</Popup>
-              </Marker>
-            </MapContainer>
-          ) : (
-            <IonSkeletonText
-              animated
-              style={{ width: "100%", height: "60vw" }}
-            />
+        <IonLabel>
+          {name ? <h1>Hello {name["first_name"]}!</h1> : <p>Can't Find Name</p>}
+          <h3>These are your spots</h3>
+        </IonLabel>
+        <br></br>
+        <div>
+          {spotAmount > 0 && (
+            <IonLabel class="ion-text-center">
+              <h3>
+                Swipe Right <IonIcon src={arrowForward}></IonIcon>
+              </h3>
+            </IonLabel>
           )}
-        </IonCard>
-        <form onSubmit={(e) => onSubmit(e)}>
-          <IonItem>
+        </div>
+        <IonSlides
+          pager={true}
+          options={{ pager: true }}
+          style={{ "padding-bottom": "2em" }}
+        >
+          {spots.map((spot) => {
+            if (spot.owner == name["username"]) {
+              //SethasSpots(true);
+              spotAmount += 1;
+              console.log(spotAmount);
+              if (spot.photo == "/media/nopic" || spot.photo == null) {
+                return (
+                  <IonSlide key={spot.id}>
+                    <IonCard class="ion-text-center">
+                      <IonImg src={noimg} />
+                      <IonCardTitle>{spot.title}</IonCardTitle>
+                      <IonCardContent>
+                        <p>{spot.description}</p>
+                        <p>by {spot.owner}</p>
+                      </IonCardContent>
+                    </IonCard>
+                  </IonSlide>
+                );
+              } else {
+                return (
+                  <IonSlide key={spot.id}>
+                    <IonCard class="ion-text-center">
+                      <IonImg
+                        src={`http://localhost:8000${spot.photo}`}
+                        style={{ height: "50vw" }}
+                      />
+                      <IonCardTitle onClick={() => setShowModal(true)}>
+                        {spot.title}
+                      </IonCardTitle>
+                      <p>{spot.description}</p>
+                      <p>by you</p>
+                    </IonCard>
+                  </IonSlide>
+                );
+              }
+            }
+          })}
+        </IonSlides>
+        {spotAmount == 0 && <p>You have no Spots!</p>}
+        <IonButton
+          onClick={() => setShowModal(true)}
+          shape="round"
+          style={{ width: "100%" }}
+        >
+          Add another spot
+        </IonButton>
+        <IonModal
+          isOpen={showModal}
+          cssClass="my-custom-class"
+          swipeToClose={true}
+          onDidDismiss={() => setShowModal(false)}
+        >
+          <IonContent>
+            <IonToolbar></IonToolbar>
             <IonLabel>
-              <IonIcon src={mapOutline} />
+              <h1>Where is the spot?</h1>
             </IonLabel>
-            <IonInput
-              placeholder="Title"
-              type="text"
-              name="title"
-              onIonChange={(e) => onChange(e)}
-              required
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel>
-              <IonIcon src={informationCircleOutline} />
-            </IonLabel>
-            <IonInput
-              placeholder="Description"
-              type="text"
-              name="description"
-              onIonChange={(e) => onChange(e)}
-              required
-            ></IonInput>
-          </IonItem>
-          <IonButton
-            type="submit"
-            shape="round"
-            class="button_primary_white_text"
-            style={{ width: "100%" }}
-          >
-            Add Spot
-          </IonButton>
-        </form>
-        <IonFab vertical="bottom" horizontal="center" slot="fixed">
-          <IonFabButton onClick={() => takePhoto()}>
-            <IonIcon icon={camera}></IonIcon>
-          </IonFabButton>
-        </IonFab>
-        <IonGrid>
-          <IonRow>
-            {photos.map((photo, index) => (
-              <IonCol size="6" key={index}>
-                <IonImg src={photo.webviewPath} />
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
+            <IonCard>
+              {locationUser ? (
+                <MapContainer
+                  center={[locationUser.latitude, locationUser.longitude]}
+                  zoom={15}
+                  scrollWheelZoom={false}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker
+                    position={[locationUser.latitude, locationUser.longitude]}
+                  >
+                    <Popup>You are here</Popup>
+                  </Marker>
+                </MapContainer>
+              ) : (
+                <IonSkeletonText
+                  animated
+                  style={{ width: "100%", height: "60vw" }}
+                />
+              )}
+            </IonCard>
+            <form onSubmit={(e) => onSubmit(e)}>
+              <IonItem>
+                <IonLabel>
+                  <IonIcon src={mapOutline} />
+                </IonLabel>
+                <IonInput
+                  placeholder="Title"
+                  type="text"
+                  name="title"
+                  onIonChange={(e) => onChange(e)}
+                  required
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonLabel>
+                  <IonIcon src={informationCircleOutline} />
+                </IonLabel>
+                <IonInput
+                  placeholder="Description"
+                  type="text"
+                  name="description"
+                  onIonChange={(e) => onChange(e)}
+                  required
+                ></IonInput>
+              </IonItem>
+              <IonButton
+                type="submit"
+                shape="round"
+                class="button_primary_white_text"
+                style={{ width: "100%" }}
+              >
+                Add Spot
+              </IonButton>
+            </form>
+            <IonFab horizontal="center">
+              <IonFabButton onClick={() => takePhoto()}>
+                <IonIcon icon={camera}></IonIcon>
+              </IonFabButton>
+            </IonFab>
+            <IonGrid>
+              <IonRow>
+                {photos.map((photo, index) => (
+                  <IonCol size="6" key={index}>
+                    <IonImg src={photo.webviewPath} />
+                  </IonCol>
+                ))}
+              </IonRow>
+            </IonGrid>
+            <IonFab vertical="bottom" style={{ width: "100%" }}>
+              <IonButton
+                onClick={() => setShowModal(false)}
+                shape="round"
+                style={{ width: "100%" }}
+              >
+                Cancel
+              </IonButton>
+            </IonFab>
+          </IonContent>
+        </IonModal>
       </IonContent>
     </IonPage>
   );

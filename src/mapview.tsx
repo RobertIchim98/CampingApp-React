@@ -13,6 +13,8 @@ import {
   IonText,
   IonModal,
   IonButton,
+  IonLabel,
+  IonIcon,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
@@ -28,6 +30,7 @@ import {
   getPosition,
 } from "./actions/spots";
 import { Toast } from "./toast";
+import { arrowForward } from "ionicons/icons";
 
 const MapView = ({ isAuthenticated, load_user }) => {
   const [name, setName] = React.useState([]);
@@ -96,6 +99,9 @@ const MapView = ({ isAuthenticated, load_user }) => {
     <IonPage>
       <IonContent>
         <IonToolbar></IonToolbar>
+        <IonLabel>
+          <h1>Discover and Explore!</h1>
+        </IonLabel>
         <IonCard>
           {location ? (
             <MapContainer
@@ -181,7 +187,11 @@ const MapView = ({ isAuthenticated, load_user }) => {
             </IonText>
           )}
         </IonCard>
-        <IonSlides pager={true} options={{ pagination: true }}>
+        <IonSlides
+          pager={true}
+          options={{ pager: true }}
+          style={{ "padding-bottom": "2em" }}
+        >
           {spots.map((spot) => {
             if (spot.photo == "/media/nopic" || spot.photo == null) {
               return (
