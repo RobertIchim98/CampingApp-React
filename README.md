@@ -1,6 +1,15 @@
 # Adventurer's Atlas - Overview
 
-## Geolocation Camping App built with React and Ionic
+## Technical Diagram
+
+The following project has 3 Tier Architecture.  
+* Front end of the project has been done using React and Ionic
+* Middle tier is a Django API which serves camping spot information to the front end and commits this info into the backend
+* Backend is a postGIS database containing geolocation data as well as user information
+
+<img src="images/tech-diagram.png">
+
+## Camping Discovery
 
 Adventurer's Atlas is a Camping app allowing users to share their camping spots with the camping community.  
 Users can click onto any spot on the map (powered by *OpenStreetMap*) and be redirected to GoogleMaps for directions to the camping spot they want to go to.  
@@ -90,6 +99,4 @@ export const checkAuthenticated = () => async (dispatch) => {
 <img src="images/Login.png" width="300px">
 <img src="images/Register.png" width="300px">
 </div>
-
-## Technical Diagrams
 
