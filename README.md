@@ -24,18 +24,8 @@ export const addSpot = async (formData) => {
     res.send(formData);
     return 200;
   } catch (error) {
-    if (error.response) {
-      console.log("error response: " + error.response);
-      return error.response;
-    } else if (error.request) {
-      console.log("error request: " + error.request);
-      return error.reqest;
-    } else if (error.message) {
-      console.log("error message: " + error.message);
-      return error.message;
-    }
-    console.log("Location error" + error);
-    return error;
+  ...
+  ...
   }
 };
 ```
