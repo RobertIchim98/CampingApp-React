@@ -57,7 +57,9 @@ export const addSpot = async (formData) => {
 
 ## Users and Authentication
 
-The app is using JSON Web Token (JWT) authentication provided by the Django API and stores the token locally on the device.
+The app is using JSON Web Token (JWT) authentication provided by the Django API and stores the token locally on the device.  
+Using Axios, the token is sent to the API to be verified and the payload will be updated with the user information.  
+The payload is used to display the user's information within the app 
 
 ```JavaScript
 export const checkAuthenticated = () => async (dispatch) => {
