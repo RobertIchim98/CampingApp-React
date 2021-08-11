@@ -5,7 +5,7 @@
 The following project has 3 Tier Architecture.  
 * Front end of the project has been done using React and Ionic
 * Middle tier is a Django API which serves camping spot information to the front end and commits this info into the backend
-* Backend is a postGIS database containing geolocation data as well as user information
+* Backend is a postGIS database containing geolocation data as well as user information  
 
 <img src="images/tech-diagram.png">
 
