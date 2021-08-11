@@ -2,5 +2,5 @@
 
 Geolocation Camping App built with React and Ionic
 
-<img src="images/Picture%201.png" height="50%">
+<img src="images/Picture%201.png" height="30%" width="100%">
 ![](images/Picture%201.png)
