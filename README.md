@@ -24,6 +24,7 @@ The app also features weather API provided by *OpnenWeather* that refreshes ever
   }, []);
 ```
 
+**Discover Page**
 <div>
 <img src="images/Picture%201.png">
 <img src="images/Picture2.png">
