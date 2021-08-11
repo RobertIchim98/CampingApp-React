@@ -59,6 +59,28 @@ export const addSpot = async (formData) => {
 
 The app is using JSON Web Token (JWT) authentication provided by the Django API and stores the token locally on the device.
 
+```JavaScript
+export const checkAuthenticated = () => async (dispatch) => {
+  if (localStorage.getItem("access")) {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+
+    const body = JSON.stringify({ token: localStorage.getItem("access") });
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/jwt/verify/`,
+        body,
+        config
+      )
+      ...
+      ...
+```
+
 <div>
 <img src="images/Login.png" width="300px">
 <img src="images/Register.png" width="300px">
