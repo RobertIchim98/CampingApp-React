@@ -1,6 +1,6 @@
-# Adventurer's Atlas
+# Adventurer's Atlas - Overview
 
-## Geolocation Camping App built with React and Ionic 
+## Geolocation Camping App built with React and Ionic
 
 Adventurer's Atlas is a Camping app allowing users to share their camping spots with the camping community.  
 Users can click onto any spot on the map (powered by *OpenStreetMap*) and be redirected to GoogleMaps for directions to the camping spot they want to go to.  
@@ -55,3 +55,12 @@ export const addSpot = async (formData) => {
 <img src="images/Spot3.png">
 </div>
 
+## Users and Authentication
+
+The app is using JSON Web Token (JWT) authentication provided by the Django API and stores the token locally on the device.
+
+<div>
+<img src="images/Spot1.png">
+<img src="images/Spot2.png">
+<img src="images/Spot3.png">
+</div>
