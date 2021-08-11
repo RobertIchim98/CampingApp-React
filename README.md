@@ -12,9 +12,9 @@ The app also features weather API provided by *OpnenWeather* that refreshes ever
 </div>
 
 ## Adding Spots
-Users can upload their own camping spots along with details and attach a photo of the spot which gets uploaded to the DjangoAPI.
-
-The asynchronous addSpot function uploads the data as a form to the API
+Users can upload their own camping spots along with the spot details. They can also attach a photo or take it using the device's camera.
+  
+The asynchronous addSpot function uploads the data and image as a form to the API
 
 ```JavaScript
 export const addSpot = async (formData) => {
@@ -29,6 +29,8 @@ export const addSpot = async (formData) => {
   }
 };
 ```
+
+
 <div>
 <img src="images/Spot1.png">
 <img src="images/Spot2.png">
