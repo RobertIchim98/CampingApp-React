@@ -60,6 +60,6 @@ export const addSpot = async (formData) => {
 The app is using JSON Web Token (JWT) authentication provided by the Django API and stores the token locally on the device.
 
 <div>
-<img src="images/Login.png">
+<img src="images/Login.png" width="300px">
 <img src="images/Register.png" width="300px">
 </div>
