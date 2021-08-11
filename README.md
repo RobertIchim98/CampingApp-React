@@ -61,5 +61,5 @@ The app is using JSON Web Token (JWT) authentication provided by the Django API 
 
 <div>
 <img src="images/Login.png">
-<img src="images/Register.png">
+<img src="images/Register.png" height="100%">
 </div>
