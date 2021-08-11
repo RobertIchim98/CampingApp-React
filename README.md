@@ -2,4 +2,4 @@
 
 Geolocation Camping App built with React and Ionic
 
-![](images/Picture1.png)
+![](images/Picture%201.png)
