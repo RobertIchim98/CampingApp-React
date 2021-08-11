@@ -1,6 +1,6 @@
 ## Adventurer's Atlas
 
-> Geolocation Camping App built with React and Ionic
+**Geolocation Camping App built with React and Ionic**
 
 Adventurer's Atlas is a Camping app allowing users to share their camping spots with the camping community.
 Users can click onto any spot on the map and be redirected to GoogleMaps for directions to the camping spot they want to go to.
