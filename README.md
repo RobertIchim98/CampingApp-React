@@ -11,6 +11,7 @@ The app also features weather API provided by *OpnenWeather* that refreshes ever
 <img src="images/Picture2.png">
 </div>
 
+
 Users can upload their own camping spots along with details and attach a photo of the spot which gets uploaded to the DjangoAPI.
 
 <div>
