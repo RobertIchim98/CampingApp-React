@@ -1,4 +1,4 @@
-# ionic-react
-The front end app for the camping app
+# Adventurer's Atlas
 
-Geolocation Camping App built using React and Ionic
+Geolocation Camping App built with React and Ionic
+
