@@ -48,7 +48,7 @@ export const addSpot = async (formData) => {
 };
 ```
 
-
+**Uploading Spot Demonstration**
 <div>
 <img src="images/Spot1.png">
 <img src="images/Spot2.png">
@@ -84,6 +84,7 @@ export const checkAuthenticated = () => async (dispatch) => {
 ```
 <img src="images/proto1.png">
 
+**Login and Registration Screens** 
 <div>
 <img src="images/Login.png" width="300px">
 <img src="images/Register.png" width="300px">
