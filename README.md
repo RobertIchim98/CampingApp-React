@@ -2,8 +2,8 @@
 
 **Geolocation Camping App built with React and Ionic**
 
-Adventurer's Atlas is a Camping app allowing users to share their camping spots with the camping community.
-Users can click onto any spot on the map and be redirected to GoogleMaps for directions to the camping spot they want to go to.
+Adventurer's Atlas is a Camping app allowing users to share their camping spots with the camping community.  
+Users can click onto any spot on the map (powered by *OpenStreetMap*) and be redirected to GoogleMaps for directions to the camping spot they want to go to.  
 The app also features weather API provided by *OpnenWeather* that refreshes every 10 minutes.  
 
 <div>
